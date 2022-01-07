@@ -6,7 +6,6 @@ import redis.embedded.exceptions.RedisBuildingException;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +16,8 @@ public class RedisServerBuilder {
 
     private File executable;
     private RedisExecProvider redisExecProvider = RedisExecProvider.defaultProvider();
-    private String bind="127.0.0.1";
+    private String bind = "127.0.0.1";
     private int port = 6379;
-    private InetSocketAddress slaveOf;
     private String redisConf;
 
     private StringBuilder redisConfigBuilder;
@@ -36,16 +34,6 @@ public class RedisServerBuilder {
 
     public RedisServerBuilder port(int port) {
         this.port = port;
-        return this;
-    }
-
-    public RedisServerBuilder slaveOf(String hostname, int port) {
-        this.slaveOf = new InetSocketAddress(hostname, port);
-        return this;
-    }
-
-    public RedisServerBuilder slaveOf(InetSocketAddress slaveOf) {
-        this.slaveOf = slaveOf;
         return this;
     }
 
@@ -81,7 +69,6 @@ public class RedisServerBuilder {
     public void reset() {
         this.executable = null;
         this.redisConfigBuilder = null;
-        this.slaveOf = null;
         this.redisConf = null;
     }
 
@@ -113,7 +100,7 @@ public class RedisServerBuilder {
     }
 
     private List<String> buildCommandArgs() {
-        List<String> args = new ArrayList<String>();
+        List<String> args = new ArrayList<>();
         args.add(executable.getAbsolutePath());
 
         if (!Strings.isNullOrEmpty(redisConf)) {
@@ -122,12 +109,6 @@ public class RedisServerBuilder {
 
         args.add("--port");
         args.add(Integer.toString(port));
-
-        if (slaveOf != null) {
-            args.add("--slaveof");
-            args.add(slaveOf.getHostName());
-            args.add(Integer.toString(slaveOf.getPort()));
-        }
 
         return args;
     }

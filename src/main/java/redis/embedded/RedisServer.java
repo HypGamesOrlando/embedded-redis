@@ -17,7 +17,7 @@ public class RedisServer extends AbstractRedisInstance {
     public RedisServer(int port) {
         super(port);
         this.args = builder().port(port).build().args;
-	}
+    }
 
     public RedisServer(File executable, int port) {
         super(port);
@@ -37,7 +37,7 @@ public class RedisServer extends AbstractRedisInstance {
 
     RedisServer(List<String> args, int port) {
         super(port);
-        this.args = new ArrayList<String>(args);
+        this.args = new ArrayList<>(args);
     }
 
     public static RedisServerBuilder builder() {
